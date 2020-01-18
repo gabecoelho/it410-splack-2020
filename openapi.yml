@@ -14,6 +14,8 @@ paths:
       responses:
         200:
           description: A list of channels.
+        default:
+          description: Unexpected
     post:
       summary: Create a new channel.
       tags:
@@ -30,6 +32,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChannelBasic'
+        default:
+          description: Unexpected
   /channels/{channelId}:
     parameters:
       - $ref: '#/components/parameters/ChannelId'
@@ -46,6 +50,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Channel'
+        default:
+          description: Unexpected
     put:
       summary: Update a channel's basic information.
       tags:
@@ -59,6 +65,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChannelBasic'
+        default:
+          description: Unexpected
   /channels/{channelId}/messages:
     parameters:
       - $ref: '#/components/parameters/ChannelId'
@@ -79,6 +87,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Message'
+        default:
+          description: Unexpected
     post:
       summary: Post a message to the channel.
       tags:
@@ -92,6 +102,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageBasic'
+        default:
+          description: Unexpected
   /channels/{channelId}/members:
     parameters:
       - $ref: '#/components/parameters/ChannelId'
@@ -108,6 +120,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected
   /channels/{channelId}/members/{memberId}:
     parameters:
       - $ref: '#/components/parameters/ChannelId'
@@ -119,6 +133,8 @@ paths:
       responses:
         200:
           description: User is now a member of the channel.
+        default:
+          description: Unexpected
     delete:
       summary: Remove user from being a member of the channel.
       tags:
@@ -126,6 +142,8 @@ paths:
       responses:
         200:
           description: User is not a member of the channel.
+        default:
+          description: Unexpected
   /messages/{messageId}:
     parameters:
       - $ref: '#/components/parameters/MessageId'
@@ -142,6 +160,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageBasic'
+        default:
+          description: Unexpected
     delete:
       summary: Delete a message and its comments.
       tags:
@@ -149,6 +169,8 @@ paths:
       responses:
         204:
           description: Message deleted
+        default:
+          description: Unexpected
   /messages/{messageId}/comments:
     parameters:
       - $ref: '#/components/parameters/MessageId'
@@ -168,6 +190,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
+        default:
+          description: Unexpected
     post:
       summary: Add a comment to a message.
       tags:
@@ -184,6 +208,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
+        default:
+          description: Unexpected
   /comments/{commentId}:
     parameters:
       - $ref: '#/components/parameters/CommentId'
@@ -200,6 +226,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
+        default:
+          description: Unexpected
     delete:
       summary: Delete a comment.
       tags:
@@ -207,6 +235,8 @@ paths:
       responses:
         204:
           description: Comment removed.
+        default:
+          description: Unexpected
   /users:
     post:
       summary: Create a user
@@ -217,6 +247,8 @@ paths:
       responses:
         201:
           description: User created.
+        default:
+          description: Unexpected
     put:
       summary: Log in
       tags:
@@ -226,6 +258,8 @@ paths:
       responses:
         200:
           description: Log in successful.
+        default:
+          description: Unexpected
     delete:
       summary: Log out
       tags:
@@ -233,6 +267,8 @@ paths:
       responses:
         204:
           description: Logged out.
+        default:
+          description: Unexpected
 components:
   parameters:
     ChannelId:

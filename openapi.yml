@@ -14,6 +14,12 @@ paths:
       responses:
         200:
           description: A list of channels.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Channel'
         default:
           description: Unexpected
     post:
@@ -355,7 +361,7 @@ components:
       type: object
       properties:
         basic:
-          $ref: ChannelBasic
+          $ref: '#/components/schemas/ChannelBasic'
         metadata:
           type: object
           properties:
@@ -380,7 +386,7 @@ components:
           default: ''
     Comment:
       allOf:
-        - $ref: MessageBase
+        - $ref: '#/components/schemas/MessageBase'
         - type: object
           properties:
             messageId:
@@ -391,13 +397,13 @@ components:
       type: object
       properties:
         basic:
-          $ref: MessageBasic
+          $ref: '#/components/schemas/MessageBasic'
         comments:
           description: The first 25 comments on a message.
           type: array
           maxItems: 25
           items:
-            $ref: Comment
+            $ref: '#/components/schemas/Comment'
     MessageBase:
       type: object
       required:
@@ -428,7 +434,7 @@ components:
           format: date-time
     MessageBasic:
       allOf:
-        - $ref: MessageBase
+        - $ref: '#/components/schemas/MessageBase'
         - type: object
           required:
             - channelId

@@ -5,8 +5,10 @@ info:
   version: '1.0'
 paths:
   /channels:
+    x-controller: channels
     get:
-      summary: Get a list of channels.
+      summary: Get a list of channels and stuff.
+      x-operation: getChannelsList
       tags:
         - Channels
       parameters:
@@ -23,6 +25,7 @@ paths:
         default:
           description: Unexpected
     post:
+      x-operation: createChannel
       summary: Create a new channel.
       tags:
         - Channels
@@ -39,12 +42,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ChannelBasic'
         default:
-          description: Unexpected
+          description: Other response code
   /channels/{channelId}:
     parameters:
       - $ref: '#/components/parameters/ChannelId'
     get:
       summary: Get a single channel.
+      x-controller: channels
+      x-operation: getChannel
       tags:
         - Channels
       parameters:
@@ -60,6 +65,8 @@ paths:
           description: Unexpected
     put:
       summary: Update a channel's basic information.
+      x-controller: channels
+      x-operation: setChannel
       tags:
         - Channels
       requestBody:
@@ -78,6 +85,8 @@ paths:
       - $ref: '#/components/parameters/ChannelId'
     get:
       summary: Get a list of messages from a channel.
+      x-controller: messages
+      x-operation: getMessages
       tags:
         - Messages
       parameters:
@@ -97,6 +106,8 @@ paths:
           description: Unexpected
     post:
       summary: Post a message to the channel.
+      x-controller: messages
+      x-operation: postMessage
       tags:
         - Messages
       requestBody:
@@ -115,6 +126,8 @@ paths:
       - $ref: '#/components/parameters/ChannelId'
     get:
       summary: Get a list of channel members.
+      x-controller: channels
+      x-operation: getMembers
       tags:
         - Users
       responses:
@@ -134,6 +147,8 @@ paths:
       - $ref: '#/components/parameters/MemberId'
     put:
       summary: Make user a member of the channel.
+      x-controller: channels
+      x-operation: setMember
       tags:
         - Users
       responses:
@@ -143,6 +158,8 @@ paths:
           description: Unexpected
     delete:
       summary: Remove user from being a member of the channel.
+      x-controller: channels
+      x-operation: removeMember
       tags:
         - Users
       responses:
@@ -155,6 +172,8 @@ paths:
       - $ref: '#/components/parameters/MessageId'
     put:
       summary: Set a message's content.
+      x-controller: messages
+      x-operation: setMessage
       tags:
         - Messages
       requestBody:
@@ -170,6 +189,8 @@ paths:
           description: Unexpected
     delete:
       summary: Delete a message and its comments.
+      x-controller: messages
+      x-operation: removeChannel
       tags:
         - Messages
       responses:
@@ -182,6 +203,8 @@ paths:
       - $ref: '#/components/parameters/MessageId'
     get:
       summary: Get a list of comments associated with this message.
+      x-controller: messages
+      x-operation: getComments
       tags:
         - Comments
       parameters:
@@ -200,6 +223,8 @@ paths:
           description: Unexpected
     post:
       summary: Add a comment to a message.
+      x-controller: messages
+      x-operation: postComment
       tags:
         - Comments
       requestBody:
@@ -221,6 +246,8 @@ paths:
       - $ref: '#/components/parameters/CommentId'
     put:
       summary: Set a comment's text.
+      x-controller: messages
+      x-operation: setComment
       tags:
         - Comments
       requestBody:
@@ -236,6 +263,8 @@ paths:
           description: Unexpected
     delete:
       summary: Delete a comment.
+      x-controller: messages
+      x-operation: removeComment
       tags:
         - Comments
       responses:
@@ -246,6 +275,8 @@ paths:
   /users:
     post:
       summary: Create a user
+      x-controller: users
+      x-operation: createUser
       tags:
         - Users
       requestBody:
@@ -257,6 +288,8 @@ paths:
           description: Unexpected
     put:
       summary: Log in
+      x-controller: users
+      x-operation: login
       tags:
         - Users
       requestBody:
@@ -268,6 +301,8 @@ paths:
           description: Unexpected
     delete:
       summary: Log out
+      x-controller: users
+      x-operation: logout
       tags:
         - Users
       responses:
@@ -293,7 +328,8 @@ components:
           type: string
           enum:
             - basic
-            - metadata
+            - members
+            - messages
     CommentId:
       name: commentId
       in: path
@@ -362,12 +398,15 @@ components:
       properties:
         basic:
           $ref: '#/components/schemas/ChannelBasic'
-        metadata:
-          type: object
-          properties:
-            memberCount:
-              type: integer
-              readOnly: true
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        messages:
+          description: The most recent 20 messages.
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageBasic'
     ChannelBasic:
       type: object
       required:
@@ -446,6 +485,9 @@ components:
     User:
       type: object
       properties:
+        id:
+          description: The user's unique identifier.
+          type: string
         email:
           description: The user's email address.
           type: string

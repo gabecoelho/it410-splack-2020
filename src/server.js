@@ -15,7 +15,7 @@ module.exports = function ({ hideWarnings = false }) {
   const pathToOpenApiDoc = path.resolve(__dirname, '../openapi.yml')
 
   // Create an enforcer middleware instance
-  const enforcer = new Enforcer(pathToOpenApiDoc, { hideWarnings: true })
+  const enforcer = new Enforcer(pathToOpenApiDoc)
 
   // This middleware will handle explicit mock requests.
   enforcer.mocks(null, false).catch(err => {

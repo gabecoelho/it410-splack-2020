@@ -8,7 +8,7 @@
   "paths": {
     "/channels": {
       "get": {
-        "summary": "Get a list of channels.",
+        "summary": "Get a list of channels and stuff.",
         "tags": [
           "Channels"
         ],

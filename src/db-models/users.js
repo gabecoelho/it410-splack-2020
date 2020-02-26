@@ -1,12 +1,18 @@
 const mongoose = require('mongoose')
 
-exports.definition = function () {
+const schema = new mongoose.Schema({
+  email: String,
+  name: String,
+  avatar: String
+})
+
+schema.methods.toResult = function () {
   return {
-    email: String,
-    name: String,
-    avatar: String
+    id: this._id,
+    email: this.email,
+    name: this.name,
+    avatar: this.avatar
   }
 }
 
-const User = new mongoose.Schema(exports.definition())
-exports.User = mongoose.model('User', User)
+module.exports = mongoose.model('User', schema)

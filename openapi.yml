@@ -5,9 +5,9 @@ info:
   version: '1.0'
 paths:
   /channels:
-    x-controller: channels
     get:
       summary: Get a list of channels and stuff.
+      x-controller: channels
       x-operation: getChannelsList
       tags:
         - Channels
@@ -25,6 +25,7 @@ paths:
         default:
           description: Unexpected
     post:
+      x-controller: channels
       x-operation: createChannel
       summary: Create a new channel.
       tags:
@@ -35,7 +36,7 @@ paths:
         201:
           description: Channel created
           headers:
-            Location:
+            location:
               $ref: '#/components/headers/PostLocation'
           content:
             application/json:
@@ -80,6 +81,17 @@ paths:
                 $ref: '#/components/schemas/ChannelBasic'
         default:
           description: Unexpected
+    delete:
+      summary: Delete a channel, its membership, and messages.
+      x-controller: channels
+      x-operation: deleteChannel
+      tags:
+        - Channels
+      responses:
+        204:
+          description: Channel deleted
+        default:
+          description: Unexpected
   /channels/{channelId}/messages:
     parameters:
       - $ref: '#/components/parameters/ChannelId'
@@ -115,6 +127,9 @@ paths:
       responses:
         201:
           description: Message posted.
+          headers:
+            location:
+              $ref: '#/components/headers/PostLocation'
           content:
             application/json:
               schema:
@@ -233,7 +248,7 @@ paths:
         201:
           description: Comment posted
           headers:
-            Location:
+            location:
               $ref: '#/components/headers/PostLocation'
           content:
             application/json:
@@ -284,6 +299,9 @@ paths:
       responses:
         201:
           description: User created.
+          headers:
+            location:
+              $ref: '#/components/headers/PostLocation'
         default:
           description: Unexpected
     put:
@@ -321,6 +339,7 @@ components:
     ChannelFieldsets:
       name: fieldsets
       in: query
+      explode: false
       schema:
         type: array
         default: ['basic']
@@ -410,11 +429,11 @@ components:
     ChannelBasic:
       type: object
       required:
-        - id
         - name
       properties:
         id:
           description: A unique identifier.
+          readOnly: true
           type: string
         name:
           description: The channel's name
@@ -487,6 +506,7 @@ components:
       properties:
         id:
           description: The user's unique identifier.
+          readOnly: true
           type: string
         email:
           description: The user's email address.
@@ -506,4 +526,3 @@ components:
         password:
           description: The user's password.
           type: string
-          format: password

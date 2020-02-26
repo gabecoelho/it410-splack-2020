@@ -9,7 +9,11 @@ exports.definition = function () {
   }
 }
 
-const Message = new mongoose.Schema(Object.assign({}, exports.definition(), {
+const schema = new mongoose.Schema({
+  text: String,
+  postedBy: String,
+  datePosted: Date,
+  dateUpdated: Date,
   comments: [
     {
       text: String,
@@ -18,5 +22,26 @@ const Message = new mongoose.Schema(Object.assign({}, exports.definition(), {
       dateUpdated: Date,
     }
   ]
-}))
-exports.Message = mongoose.model('Message', Message)
+})
+
+schema.methods.toResult = function (fieldsets) {
+  const result = {}
+
+  if (fieldsets.includes('basic')) {
+    result.basic = {
+      id: this._id,
+      text: this.text,
+      postedBy: this.postedBy,
+      datePosted: this.datePosted,
+      dateUpdated: this.dateUpdated,
+    }
+  }
+
+  if (fieldsets.includes('comments')) {
+    result.members = this.comments
+  }
+
+  return result
+}
+
+modules.exports = mongoose.model('Message', schema)

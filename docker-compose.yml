@@ -9,18 +9,20 @@ services:
   #     DB_CONNECTION_STRING: monogodb://localhost/splack
   #     DB_PASSWORD: example
 
-  db:
-    image: postgres
+  mongo:
+    image: mongo
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
-    volumes:
-      - ./db:/var/lib/postgresql/data
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - 5432:5432
+      - 27017:27017
 
-  adminer:
-    image: adminer
+  mongo-express:
+    image: mongo-express
     restart: always
     ports:
-      - 8080:8080
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example

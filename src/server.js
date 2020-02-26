@@ -4,7 +4,7 @@ const Enforcer = require('openapi-enforcer-middleware')
 const path = require('path')
 const mongoose = require('mongoose');
 
-module.exports = function ({ hideWarnings = false }) {
+module.exports = function ({ hideWarnings = false } = {}) {
   // connect to mongoose
   const dbPromise = mongoose.connect(env.dbConnString, { useNewUrlParser: true, useUnifiedTopology: true })
 

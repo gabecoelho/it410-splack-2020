@@ -30,11 +30,11 @@ module.exports = function ({ hideWarnings = false } = {}) {
   // This middleware will automatically run mocking if the controller could not produce a response.
   enforcer.mocks(null, true).catch(() => {})
 
+  // serve docs
+  app.use('/api/docs', express.static(path.resolve(__dirname, '..', 'docs')))
+
   // Add the enforcer middleware runner to the express app.
   app.use('/api', enforcer.middleware())
-
-  // serve docs
-  app.use('/docs', express.static(path.resolve(__dirname, 'docs')))
 
   // Add error handling middleware
   app.use((err, req, res, next) => {
@@ -55,9 +55,11 @@ module.exports = function ({ hideWarnings = false } = {}) {
   return new Promise((resolve, reject) => {
     const listener = app.listen(port, err => {
       if (err) return reject(err)
-      dbPromise.then(() => {
-        resolve(listener)
-      })
+      dbPromise
+        .then(() => {
+          resolve(listener)
+        })
+        .catch(reject)
     })
   })
 

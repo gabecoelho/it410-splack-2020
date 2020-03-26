@@ -4,25 +4,65 @@
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <div id="sidebar">
       <h3>Channels</h3>
+      <div v-for="channel in channels" :key="channel.id">
+        <router-link :to="'/channels/' + channel.id">
+          {{channel.title}}
+        </router-link>
+      </div>
     </div>
     <div id="main">
-      <div id="titlebar">Title</div>
-      <div id="content">Content</div>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import axios from 'axios'
 
-axios.get('/')
-  .catch(console.error)
+// import axios from 'axios'
+// axios.get('/')
+//   .catch(console.error)
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data () {
+    return {
+    channels: [
+      {
+        id: 'general',
+        title: 'General',
+        messages: [
+          {
+            username: 'Bob Smith',
+            content: 'First to Post!',
+            replyCount: 1
+          },
+          {
+            username: 'Jan Jones',
+            content: 'Does anyone know the purpose of this channel?'
+          },
+          {
+            username: 'Pablo Vasquez',
+            content: 'It is for any posts that are intended for a general audience.'
+          }
+        ]
+      },
+      {
+        id: 'serious-stuff',
+        title: 'Serious Stuff',
+        messages: []
+      },
+      {
+        id: 'random',
+        title: 'Random',
+        messages: [
+          {
+            username: 'Alicia Tran',
+            content: 'I like turtles!'
+          }
+        ]
+      }
+    ]
+  }
   }
 }
 </script>
@@ -47,21 +87,25 @@ export default {
 
     h3 {
       padding: 0;
-      margin: 0;
+      margin: 0 0 10px 0;
+    }
+
+    a {
+      display: block;
+      padding: 5px;
+      margin: 0 -5px;
+      text-decoration: none;
+      color: color-contrast;
+
+      &:hover {
+        background-color: alpha(color-contrast, .25);
+      }
     }
   }
 
   #main {
     flex: 1;
-
-    #titlebar {
-      padding: padding-default;
-      border-bottom: 1px solid color-gray;
-    }
-
-    #content {
-      padding: padding-default;
-    }
+    padding: padding-default;
   }
 }
 </style>

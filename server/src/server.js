@@ -1,8 +1,9 @@
 const env = require('./env')
 const express = require('express')
 const Enforcer = require('openapi-enforcer-middleware')
+const passport = require('./passport')
 const path = require('path')
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 module.exports = function ({ hideWarnings = false } = {}) {
   // connect to mongoose
@@ -34,7 +35,7 @@ module.exports = function ({ hideWarnings = false } = {}) {
   app.use('/api/docs', express.static(path.resolve(__dirname, '..', 'docs')))
 
   // Add the enforcer middleware runner to the express app.
-  app.use('/api', enforcer.middleware())
+  app.use('/api', passport, enforcer.middleware())
 
   // Add error handling middleware
   app.use((err, req, res, next) => {

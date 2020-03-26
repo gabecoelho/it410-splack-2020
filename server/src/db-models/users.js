@@ -1,8 +1,12 @@
+const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
+
+const saltRounds = 10
 
 const schema = new mongoose.Schema({
   email: String,
   name: String,
+  password: String,
   avatar: String
 })
 
@@ -15,4 +19,30 @@ schema.methods.toResult = function () {
   }
 }
 
-module.exports = mongoose.model('User', schema)
+schema.statics.authenticate = async function (email, password) {
+  const users = await Users.find({ email })
+  if (!users.length) return false
+
+  const user = users[0]
+  const match = await bcrypt.compare(password, user.password)
+  return match
+}
+
+schema.statics.create = async function (email, password) {
+  const users = await Users.find({ email })
+  if (users.length) {
+    const err = Error('A user with this email already exists')
+    err.code = 'EUEXIST'
+    throw err
+  }
+
+  const user = new Users({
+    email,
+    password: await bcrypt.hash(password, saltRounds)
+  })
+  return user.save()
+}
+
+const Users = mongoose.model('Users', schema)
+
+module.exports = Users

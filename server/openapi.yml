@@ -519,6 +519,9 @@ components:
           type: string
     UserLogin:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           description: The user's email address.

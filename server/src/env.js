@@ -4,6 +4,8 @@ const env = process.env;
 
 exports.baseUrl = `${env.SERVER_PROTOCOL}://${env.SERVER_HOST}:${env.SERVER_PORT}`
 
+exports.cookieSecret = env.COOKIE_SECRET || 'this is a secret'
+
 exports.db = {
   host: env.DB_HOST,
   name: env.DB_NAME,

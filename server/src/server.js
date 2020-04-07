@@ -37,6 +37,9 @@ module.exports = function ({ hideWarnings = false } = {}) {
   // Add the enforcer middleware runner to the express app.
   app.use('/api', passport, enforcer.middleware())
 
+  // serve front end static files
+  app.use(express.static(path.resolve(__dirname, '..', 'www')))
+
   // Add error handling middleware
   app.use((err, req, res, next) => {
     // If the error was in the client's request then send back a detailed report

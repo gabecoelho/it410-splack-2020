@@ -2,12 +2,15 @@ version: '3.1'
 
 services:
 
-  # server:
-  #   context:
-  #     build: .
-  #   environment:
-  #     DB_CONNECTION_STRING: monogodb://localhost/splack
-  #     DB_PASSWORD: example
+  server:
+    build:
+      context: ./server
+    env_file: ./.env
+    environment:
+      DB_HOST: mongo
+      SERVER_PORT: 3001
+    ports:
+      - 3001:3001
 
   mongo:
     image: mongo

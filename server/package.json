@@ -5,6 +5,7 @@
   "description": "An amazing (lacking) Slack alternative.",
   "main": "index.js",
   "scripts": {
+    "start": "node src",
     "test": "mocha test",
     "test:watch": "mocha --watch test",
     "docs:build": "openapi-enforcer docs-build ./openapi.yml ./docs",

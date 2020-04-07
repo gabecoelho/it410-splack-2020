@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <toast></toast>
     <div id="sidebar">
       <h3>Channels</h3>
       <div v-for="channel in channels" :key="channel.id">
@@ -17,13 +16,13 @@
 </template>
 
 <script>
-
-// import axios from 'axios'
-// axios.get('/')
-//   .catch(console.error)
+import Toast from './components/Toast'
 
 export default {
   name: 'App',
+  components: {
+    Toast,
+  },
   data () {
     return {
     channels: [

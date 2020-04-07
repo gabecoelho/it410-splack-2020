@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
+const Error = require('../error-plus')
 
 const saltRounds = 10
 
@@ -31,9 +32,7 @@ schema.statics.authenticate = async function (email, password) {
 schema.statics.create = async function (email, password) {
   const users = await Users.find({ email })
   if (users.length) {
-    const err = Error('A user with this email already exists')
-    err.code = 'EUEXIST'
-    throw err
+    throw new Error('A user with this email already exists', 'EUEXIST')
   }
 
   const user = new Users({

@@ -40,6 +40,17 @@ module.exports = function ({ hideWarnings = false } = {}) {
   // serve front end static files
   app.use(express.static(path.resolve(__dirname, '..', 'www')))
 
+  // handle HTML5 history routing
+  const indexFilePath = path.resolve(__dirname, '..', 'www', 'index.html')
+  app.use((req, res, next) => {
+    const noFileExtension = req.path.split('/').pop().indexOf('.') === -1
+    if (req.method === 'GET' && req.accepts('html') && noFileExtension) {
+      res.sendFile(indexFilePath)
+    } else {
+      next()
+    }
+  })
+
   // Add error handling middleware
   app.use((err, req, res, next) => {
     // If the error was in the client's request then send back a detailed report
